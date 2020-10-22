@@ -21,6 +21,11 @@ export const fetchDailyData = async () => {
         const { data } = await axios.get(`${url}/daily`);
         console.log(data);
 
+        return data.map((entry) => ({
+            confirmed: entry.confirmed.total,
+            deaths: entry.deaths.total,
+            date: entry.reportDate,
+        }));
     } catch (error) {
 
     }
