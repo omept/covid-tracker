@@ -1,18 +1,59 @@
-import { render } from '@testing-library/react';
 import React from 'react';
+import {Card, CardContent, Typography, Grid} from '@material-ui/core';
+import CountUp from 'react-countup';
+import cx from 'classnames';
+import styles from './Cards.module.css';
 
-// class Cards extends React.Component{
-//     render(){
-//         return (
-//             <h1>Card Here</h1>
-//         )
-//     }
-// }
+const Cards = ({data:{confirmed, deaths, recovered, lastUpdate}}) => {
+    
+    if(!confirmed){
+        return "Loading ...";
+    }
 
-const Cards = () => {
+    const currData = new Date(lastUpdate).toDateString();
+    
         return (
-            <h1>Cards</h1>
+            <div className={styles.container}>
+                <Grid container spacing={3} justify="center">
+                    <Grid item component={Card}  xs={12} md={3} className={cx(styles.card, styles.infected)}>
+                        <CardContent>
+                            <Typography color="textSecondary" gutterBottom>Infected</Typography>
+                            <Typography variant="h5">{countAnimation(confirmed)}</Typography>
+                            <Typography color="textSecondary">{currData}</Typography>
+                            <Typography variant="body2" >Number of active covid cases</Typography>
+                        </CardContent>
+                    </Grid>
+                    <Grid item component={Card}  xs={12} md={3} className={cx(styles.card, styles.recovered)}>
+                        <CardContent>
+                            <Typography color="textSecondary" gutterBottom>Recovered</Typography>
+                            <Typography variant="h5">{countAnimation(recovered)}</Typography>
+                            <Typography color="textSecondary">{currData}</Typography>
+                            <Typography variant="body2" >Number of recoveries</Typography>
+                        </CardContent>
+                    </Grid>
+                    <Grid item component={Card}  xs={12} md={3} className={cx(styles.card, styles.deaths)}>
+                        <CardContent>
+                            <Typography color="textSecondary" gutterBottom>Deaths</Typography>
+                            <Typography variant="h5">{countAnimation(deaths)}</Typography>
+                            <Typography color="textSecondary">{currData}</Typography>
+                            <Typography variant="body2" >Number of deaths</Typography>
+                        </CardContent>
+                    </Grid>
+                </Grid>
+            </div>
         );
+
+       
 }
 
+function countAnimation({value}){
+            return (
+                <CountUp 
+                    start={0}
+                    end={value}
+                    duration={1.5}
+                    separator=","
+                />
+            );
+        }
 export default Cards;
